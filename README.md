@@ -1,2 +1,2 @@
-# poly-pyspark
-Run PySpark scripts on multiple versions of Apache Spark
+# polyspark
+Run batch scripts on multiple versions of Apache Spark
