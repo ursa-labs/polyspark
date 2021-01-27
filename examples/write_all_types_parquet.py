@@ -1,6 +1,8 @@
 import sys, json
 if len(sys.argv) > 1:
     args = json.loads(sys.argv[1].replace('\\"', '"'))
+else:
+    args = {}
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
@@ -20,19 +22,18 @@ schema = StructType([
     StructField("LongType_no_null", LongType(), False),
     StructField("FloatType_null_ok", FloatType(), True),
     StructField("FloatType_no_null", FloatType(), False),
-    #TODO(ianmcook): continue adding types here
+    #TODO(ianmcook): continue adding types here:
     #https://spark.apache.org/docs/latest/sql-ref-datatypes.html
+    #more detail at https://spark.apache.org/docs/2.4.0/sql-reference.html
+    #See nested types examples here:
+    #https://docs.databricks.com/_static/notebooks/transform-complex-data-types-python.html
 ])
 
 #rows contain:
 # 0. bottom of range
 # 1. top of range
-# 2. zero
-# 3. null
-
-#TODO(ianmcook): consider adding additional rows with above-range and below-
-#range values for some types (like the floating point types) but not for the
-#types for which this causes JSON parsing errors
+# 2. zero/empty
+# 3. null for nullable fields, zero/empty for non-nullable
 
 #TODO(ianmcook): continue adding rows here
 json = """
@@ -75,43 +76,32 @@ json = """
     },
     {
       "ByteType_null_ok": null,
-      "ByteType_no_null": null,
+      "ByteType_no_null": 0,
       "ShortType_null_ok": null,
-      "ShortType_no_null": null,
+      "ShortType_no_null": 0,
       "IntegerType_null_ok": null,
-      "IntegerType_no_null": null,
+      "IntegerType_no_null": 0,
       "LongType_null_ok": null,
-      "LongType_no_null": null,
+      "LongType_no_null": 0,
       "FloatType_null_ok": null,
-      "FloatType_no_null": null
+      "FloatType_no_null": 0.0
     }
 ]
 """
+#TODO(ianmcook): consider adding additional rows with above-range and below-
+#range values for some types (like the floating point types) but not for the
+#types for which this causes JSON parsing errors
 
 data = spark.read.schema(schema).json(sc.parallelize([json]))
-
-data.show() # for debugging
-
-#TODO(ianmcook): write data to a Parquet file
-#data.write.parquet(...)
-
-#TODO(ianmcook): write several copies of data using different compression algos:
-# option("compression","none")
-# option("compression","snappy")
-# option("compression","gzip")
-# option("compression","lzo")
-# option("compression","uncompressed") # added in 2.4? # same as "none" ?
-# option("compression","brotli")       # added in 2.4?
-# option("compression","lz4")          # added in 2.4?
-# option("compression","zstd")         # added in 2.4?
-
-#To see which compression algos Spark supports when writing Parquet and other
-#file formats, see:
-# https://github.com/apache/spark/blob/branch-3.0/sql/core/src/main/scala/org/apache/spark/sql/DataFrameWriter.scala
-#Modify the version number in the URL.
+# data.show() # for debugging
 
 #TODO(ianmcook): write several copies of data with some of the other Parquet
 #options toggled off/on:
 # https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#configuration
+
+comps = args.get('compression') or ['none']
+for comp in comps:
+    file = 'some_types' + '_' + 'spark' + '_' + spark.version + '_' + comp
+    data.repartition(1).write.parquet(file, compression = comp)
 
 spark.stop()
