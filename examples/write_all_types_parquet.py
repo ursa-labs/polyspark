@@ -105,8 +105,13 @@ data.show() # for debugging
 # option("compression","lz4")          # added in 2.4?
 # option("compression","zstd")         # added in 2.4?
 
+#To see which compression algos Spark supports when writing Parquet and other
+#file formats, see:
+# https://github.com/apache/spark/blob/branch-3.0/sql/core/src/main/scala/org/apache/spark/sql/DataFrameWriter.scala
+#Modify the version number in the URL.
+
 #TODO(ianmcook): write several copies of data with some of the other Parquet
-# options toggled off/on:
+#options toggled off/on:
 # https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#configuration
 
 spark.stop()
