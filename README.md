@@ -1,13 +1,24 @@
 # polyspark
 Run batch scripts on multiple versions of Apache Spark
 
+## System Requirements
+- Java 8, with an update number higher than 8u92
+- Python 3.6 or higher
+- Additional JARs and native libraries to enable some optional Spark features
+
 ## Usage
 Make a copy of `script_template.py` and add your PySpark code to it. Then `cd` into the directory containing `polyspark.py` and run Python code like this:
 ```python
-import polyspark as ps
-ps.run_on_spark('path/to/myscript.py', '2.0.0')
-ps.run_on_spark('path/to/myscript.py', '3.0.0')
+from polyspark import run_on_spark
+run_on_spark('path/to/myscript.py', '2.0.0')
+run_on_spark('path/to/myscript.py', '3.0.0')
 ```
+Optionally pass keyword arguments to `run_on_spark()`
+```python
+run_on_spark('path/to/myscript.py', '2.0.0', foo='bar', baz='qux')
+```
+In your PySpark code, get these arguments from the dictionary `args`.
+
 Supported Spark versions include:
 - `2.0.0`
 - `2.0.1`
