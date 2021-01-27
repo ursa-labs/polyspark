@@ -1,8 +1,10 @@
+import sys, json
+if len(sys.argv) > 1:
+    args = json.loads(sys.argv[1].replace('\'', '"'))
+
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
 from pyspark.sql.types import *
-
-#TODO(ianmcook): capture args and use to set output filename?
 
 spark = SparkSession.builder.getOrCreate()
 sc = spark.sparkContext

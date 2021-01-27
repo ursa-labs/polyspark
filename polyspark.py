@@ -1,4 +1,4 @@
-import os, urllib.request, tarfile
+import os, urllib.request, tarfile, json
 
 def get_spark(spark_version, hadoop_version='2.7'):
     base = 'https://archive.apache.org/dist/spark/spark-%s/' % spark_version
@@ -18,6 +18,11 @@ def get_spark(spark_version, hadoop_version='2.7'):
 def get_spark_submit(spark_version, hadoop_version='2.7'):
     return get_spark(spark_version, hadoop_version) + '/bin/spark-submit'
 
-def run_on_spark(script_path, spark_version, hadoop_version='2.7'):
+def run_on_spark(script_path, spark_version, hadoop_version='2.7', **kwargs):
     spark = get_spark_submit(spark_version, hadoop_version)
-    os.system(spark + ' --master local ' + script_path)
+    cmd = spark + ' --master local ' + script_path
+    if len(kwargs) > 0:
+        print(json.dumps(kwargs))
+        cmd = cmd + ' "' + json.dumps(kwargs).replace('"', '\'') + '"'
+    print(cmd)
+    os.system(cmd)
