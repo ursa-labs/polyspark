@@ -13,6 +13,7 @@ def get_spark(spark_version, hadoop_version='2.7'):
         tar = tarfile.open(filepath + '.tgz', 'r:gz')
         tar.extractall(dirpath)
         tar.close()
+        os.remove(filepath + '.tgz')
     return filepath
 
 def get_spark_submit(spark_version, hadoop_version='2.7'):
