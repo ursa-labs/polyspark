@@ -22,7 +22,5 @@ def run_on_spark(script_path, spark_version, hadoop_version='2.7', **kwargs):
     spark = get_spark_submit(spark_version, hadoop_version)
     cmd = spark + ' --master local ' + script_path
     if len(kwargs) > 0:
-        print(json.dumps(kwargs))
-        cmd = cmd + ' "' + json.dumps(kwargs).replace('"', '\'') + '"'
-    print(cmd)
+        cmd = cmd + ' "' + json.dumps(kwargs).replace('"', '\\"') + '"'
     os.system(cmd)
