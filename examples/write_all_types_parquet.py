@@ -1,8 +1,5 @@
 import sys, json
-if len(sys.argv) > 1:
-    args = json.loads(sys.argv[1].replace('\\"', '"'))
-else:
-    args = {}
+args = json.loads(sys.argv[1].replace('\\"', '"')) if len(sys.argv) > 1 else {}
 
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import *
