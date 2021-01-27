@@ -19,6 +19,7 @@ schema = StructType([
     StructField("FloatType_nullok", FloatType(), True),
     StructField("FloatType_nonull", FloatType(), False),
     #TODO(ianmcook): continue adding types here
+    #https://spark.apache.org/docs/latest/sql-ref-datatypes.html
 ])
 
 #rows contain:
@@ -91,5 +92,19 @@ data.show() # for debugging
 
 #TODO(ianmcook): write data to a Parquet file
 #data.write.parquet(...)
+
+#TODO(ianmcook): write several copies of data using different compression algos:
+# option("compression","none")
+# option("compression","snappy")
+# option("compression","gzip")
+# option("compression","lzo")
+# option("compression","uncompressed") # added in 2.4? # same as "none" ?
+# option("compression","brotli")       # added in 2.4?
+# option("compression","lz4")          # added in 2.4?
+# option("compression","zstd")         # added in 2.4?
+
+#TODO(ianmcook): write several copies of data with some of the other Parquet
+# options toggled off/on:
+# https://spark.apache.org/docs/latest/sql-data-sources-parquet.html#configuration
 
 spark.stop()
