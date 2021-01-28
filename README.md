@@ -3,7 +3,7 @@ Run batch scripts on multiple versions of Apache Spark
 
 ## System Requirements
 - Java 8, with an update number higher than 8u92
-- Python 3.6 or higher
+- Python 3.5
 - Additional JARs and native libraries to enable some optional Spark features
 
 ## Usage
