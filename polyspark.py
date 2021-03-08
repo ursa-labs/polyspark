@@ -1,5 +1,7 @@
 import os, urllib.request, tarfile, json
 
+#TODO(ianmcook): write function to install native Hadoop libraries
+
 def get_spark(spark_version, hadoop_version='2.7'):
     base = 'https://archive.apache.org/dist/spark/spark-%s/' % spark_version
     file = 'spark-%s-bin-hadoop%s' % (spark_version, hadoop_version)

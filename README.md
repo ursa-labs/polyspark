@@ -1,7 +1,7 @@
 # polyspark
 Run batch scripts on multiple versions of Apache Spark
 
-## System Requirements
+## System requirements
 - Java 8, with an update number higher than 8u92
 - Python 3.5
 - Additional JARs and native libraries to enable some optional Spark features
@@ -46,3 +46,5 @@ Supported Spark versions include:
 - `2.4.7`
 - `3.0.0`
 - `3.0.1`
+- `3.0.2`
+- `3.1.1`
